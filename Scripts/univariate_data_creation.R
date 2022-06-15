@@ -8,7 +8,6 @@ library(betapart) # partitioning beta diversity into components
 # Data --------------------------------------------------------------------
 
 plant_data <- read.csv("Data/vegetation_data_sparsity.csv")
-plant_data$sample_year <- as.numeric(plant_data$sample_year)
 
 colnames(plant_data)
 
@@ -40,8 +39,7 @@ S <- specnumber(plant_species)
 Ab <- rowSums(plant_species)
 
 
-
-# Create Alpha Diversity Dataframe -------------------------------------------------------
+# Create Alpha Diversity Dataframe ----------------------------------------
 
 plant_diversity <- plant_data %>% 
   select(site_code:treatment) %>% 
@@ -56,9 +54,19 @@ write.csv(plant_diversity, "Data/plant_alpha_diversity.csv",
 
 
 
+# Summary statistics ------------------------------------------------------
+
+univariate_summary <- plant_diversity %>% 
+  group_by(treatment, sample_year) %>% 
+  summarise(across(
+    .cols = where(is.numeric),
+    .fns = list(Mean = mean, SD = sd, SE = std.error), na.rm = TRUE,
+    .names = "{col}_{fn}"
+  ))
 
 
-
+write.csv(univariate_summary, "Data/univariate_summary.csv",
+          row.names = FALSE)
 
 # Beta Diversity ----------------------------------------------------------
 unique(plant_data$treatment)
