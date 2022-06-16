@@ -196,6 +196,6 @@ combined <- abundance_lineplot + richness_lineplot +
   plot_layout(guides = "collect") & 
   theme(legend.position = "bottom") 
 
-combined + total_beta + lake_erie_plot +
+combined + total_beta + 
   plot_annotation(tag_levels = 'A') &
   theme(plot.tag = element_text(size = 14))

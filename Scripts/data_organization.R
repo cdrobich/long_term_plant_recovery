@@ -6,13 +6,15 @@ library(tidyverse)
 # Data --------------------------------------------------------------------
 
 efficacy_data <- read.csv("Raw_data/all_efficacy.csv")
+reference_data <- read.csv("Raw_data/BACI_reference.csv") # only 2017 and 2018
 
 # clean up the column names
 
 efficacy_data <- janitor::clean_names(efficacy_data)
 colnames(efficacy_data)
 
-
+reference_data <- janitor::clean_names(reference_data)
+colnames(reference_data)
 # remove summary information (S and CC)
 
 efficacy_data <- efficacy_data %>% 
@@ -22,7 +24,7 @@ efficacy_data <- efficacy_data %>%
 plant_community <- efficacy_data %>% 
   select(water:unknown_seedling)
 
-# check for empty columns ( no species)
+# check for empty columns (no species)
 
 empty_columns <- efficacy_data %>% 
   select_if(is.numeric) %>% 

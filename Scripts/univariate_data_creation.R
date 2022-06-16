@@ -7,9 +7,11 @@ library(betapart) # partitioning beta diversity into components
 
 # Data --------------------------------------------------------------------
 
+# aerially treated sites
 plant_data <- read.csv("Data/vegetation_data_sparsity.csv")
 
 colnames(plant_data)
+
 
 # removed "unknown seedling" from choices since it is likely another species
 
