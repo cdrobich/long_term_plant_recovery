@@ -12,12 +12,6 @@ str(data)
 data$site_id <- as.factor(data$site_id)
 data$treatment <- as.factor(data$treatment)
 
-data$treatment_code <- data$treatment
-data$treatment_code[data$treatment_code == "Control"] <- 0
-data$treatment_code[data$treatment_code == "Treatment"] <- 1
-
-data$treatment_code <- as.numeric(data$treatment_code)
-
 str(data)
 
 data <- data %>% 
@@ -26,10 +20,7 @@ data <- data %>%
 
 head(data)
 
-
-hist(treated$abundance)
-hist(asin(sqrt(treated$abundance)))
-
+treated <- data
 
 # test GAM
 # "GCV.Cp" to use GCV for unknown scale parameter 
@@ -134,18 +125,17 @@ ab3_vis
 ab1 <- plot(sm(ab3_vis, 1)) 
 
 ab1_plot <- ab1 +  
-  l_ciPoly(alpha = 0.8) +
+  l_ciPoly() +
   l_fitLine(colour = "#087E8B", lwd = 2) + 
-  l_points(shape = 19, size = 1.5, alpha = 0.2,
-           position = position_jitter(width = 0.35, height = 0.1)) + 
   theme_classic() + 
   xlab(" ") +
   xlim(2015.7, 2021) +
   ylab("s(treatment year * control plots)") +
+  ylim(-55, 45) +
   geom_vline(xintercept = 2016.5, linetype = "dotted",
              colour = "grey", lwd = 1) +
-  annotate("text", x = 2015.7, y = 55, label = "A") +
-  ylim(-80, 55) +
+  annotate("text", x = 2015.7, y = 45, label = "A") +
+  annotate("text", x = 2020.5, y = 45, label = "Invaded habitat") +
   ggtitle("Living cover abundance") +
   theme(plot.title = element_text(size = 12))
 
@@ -153,18 +143,18 @@ ab1_plot <- ab1 +
 ab2 <- plot(sm(ab3_vis, 2)) 
 
 ab2_plot <- ab2 + 
-  l_ciPoly(alpha = 0.8) +
-  l_fitLine(colour = "#087E8B", lwd = 1.5) + 
-  l_points(shape = 19, size = 1.5, alpha = 0.2,
-           position = position_jitter(width = 0.35, height = 0.1)) + 
+  l_ciPoly() +
+  l_fitLine(colour = "#087E8B", lwd = 1.5) +
   theme_classic() + 
   xlab(" ") +
   xlim(2015.7, 2021) +
   ylab("s(treatment year * treatment plots)") +
-  ylim(-80, 55) +
+  ylim(-55, 45) +
   geom_vline(xintercept = 2016.5, linetype = "dotted",
              colour = "grey", lwd = 1) +
-  annotate("text", x = 2015.7, y = 55, label = "B") 
+  annotate("text", x = 2015.7, y = 45, label = "B") +
+  annotate("text", x = 2020.5, y = 45, label = "Treated habitat") +
+  ggtitle(" ") 
 
 gridPrint(ab1_plot, ab2_plot, ncol = 1)
 
@@ -179,18 +169,17 @@ ri3_vis
 ri1 <- plot(sm(ri3_vis, 1)) 
 
 ri1_plot <- ri1 + 
-  l_ciPoly(alpha = 0.8) +
+  l_ciPoly() +
   l_fitLine(colour = "#087E8B", lwd = 2) + 
-  l_points(shape = 19, size = 1.5, alpha = 0.2,
-           position = position_jitter(width = 0.35, height = 0.1)) + 
   theme_classic() + 
   xlim(2015.7, 2021) +
   xlab(" ") +
+  ylim(-2, 2) +
   ylab("s(treatment year * control plots)") +
   geom_vline(xintercept = 2016.5, linetype = "dotted",
              colour = "grey", lwd = 1) +
-  ylim(-5,5) +
-  annotate("text", x = 2015.7, y = 5, label = "C") +
+  annotate("text", x = 2015.7, y = 2, label = "C") +
+  annotate("text", x = 2020.5, y = 2, label = "Invaded habitat") +
   ggtitle("Species richness") +
   theme(plot.title = element_text(size = 12))
 
@@ -198,20 +187,25 @@ ri1_plot <- ri1 +
 ri2 <- plot(sm(ri3_vis, 2)) 
 
 ri2_plot <- ri2 + 
-  l_ciPoly(alpha = 0.8) +
+  l_ciPoly() +
   l_fitLine(colour = "#087E8B", lwd = 1.5) +
-  l_points(shape = 19, size = 1.5, alpha = 0.2,
-           position = position_jitter(width = 0.35, height = 0.1)) + 
   theme_classic() + 
   xlim(2015.7, 2021) +
   xlab(" ") +
+  ylim(-2, 2) +
   ylab("s(treatment year * treatment plots)") +
   geom_vline(xintercept = 2016.5, linetype = "dotted",
              colour = "grey", lwd = 1) +
-  ylim(-5,5) +
-  annotate("text", x = 2015.7, y = 5, label = "D")
+  annotate("text", x = 2015.7, y = 2, label = "D") +
+  annotate("text", x = 2020.5, y = 2, label = "Treated habitat")  +
+  ggtitle(" ") 
 
 gridPrint(ri1_plot, ri2_plot, ncol = 1)
+
+
+gridPrint(ab1_plot, ab2_plot,
+          ri1_plot, ri2_plot, ncol = 2)
+
 
 ######### Shannon Weiner ###############
 sh3_vis <- gammV(shannon ~ s(sample_year, k = 5, by = treatment) + treatment,
@@ -221,17 +215,16 @@ sh3_vis
 sh1 <- plot(sm(sh3_vis, 1)) 
 
 sh1_plot <- sh1 + 
-  l_ciPoly(alpha = 0.8) +
+  l_ciPoly() +
   l_fitLine(colour = "#087E8B", lwd = 2) + 
-  l_points(shape = 19, size = 1.5, alpha = 0.2,
-           position = position_jitter(width = 0.35, height = 0.1)) + 
   theme_classic() + 
   xlim(2015.7, 2021) +
+  ylim(-1.3, 1.3) +
   xlab(" ") +
   ylab("s(treatment year * control plots)") +
   geom_vline(xintercept = 2016.5, linetype = "dotted",
              colour = "grey", lwd = 1) +
-  annotate("text", x = 2015.7, y = 1.5, label = "E") +
+  annotate("text", x = 2015.7, y = 1.3, label = "E") +
   ggtitle("Shannon Weiner Diversity") +
   theme(plot.title = element_text(size = 12))
 
@@ -239,17 +232,16 @@ sh1_plot <- sh1 +
 sh2 <- plot(sm(sh3_vis, 2)) 
 
 sh2_plot <- sh2 +
-  l_ciPoly(alpha = 0.8) +
+  l_ciPoly() +
   l_fitLine(colour = "#087E8B", lwd = 2) + 
-  l_points(shape = 19, size = 1.5, alpha = 0.2,
-           position = position_jitter(width = 0.35, height = 0.1)) + 
   theme_classic() + 
   xlim(2015.7, 2021) +
+  ylim(-1.3, 1.3) +
   xlab(" ") +
   ylab("s(treatment year * treatment plots)") +
   geom_vline(xintercept = 2016.5, linetype = "dotted",
              colour = "grey", lwd = 1) +
-  annotate("text", x = 2015.7, y = 1.5, label = "F") 
+  annotate("text", x = 2015.7, y = 1.3, label = "F") 
 
 gridPrint(sh1_plot, sh2_plot, ncol = 1)
 
@@ -263,10 +255,8 @@ pi3_vis
 pi1 <- plot(sm(pi3_vis, 1)) 
 
 pi1_plot <- pi1 + 
-  l_ciPoly(alpha = 0.8) +
+  l_ciPoly() +
   l_fitLine(colour = "#087E8B", lwd = 2) + 
-  l_points(shape = 19, size = 1.5, alpha = 0.2,
-           position = position_jitter(width = 0.35, height = 0.1)) + 
   theme_classic() + 
   xlim(2015.7, 2021) +
   xlab(" ") +
@@ -281,10 +271,8 @@ pi1_plot <- pi1 +
 pi2 <- plot(sm(pi3_vis, 2)) 
 
 pi2_plot <- pi2 +
-  l_ciPoly(alpha = 0.8) +
+  l_ciPoly() +
   l_fitLine(colour = "#087E8B", lwd = 2) + 
-  l_points(shape = 19, size = 1.5, alpha = 0.2,
-           position = position_jitter(width = 0.35, height = 0.1)) + 
   theme_classic() + 
   xlim(2015.7, 2021) +
   ylim(-1, 1) +
@@ -298,9 +286,9 @@ gridPrint(pi1_plot, pi2_plot, ncol = 1)
 
 
 
-gridPrint(ab1_plot, ab2_plot,
-          ri1_plot, ri2_plot, 
-          sh1_plot, sh2_plot,
+
+
+gridPrint(sh1_plot, sh2_plot,
           pi1_plot, pi2_plot, ncol = 2)
 
 # pixel ratio of 1078 x 1400

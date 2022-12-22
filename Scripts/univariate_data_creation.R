@@ -5,6 +5,7 @@ library(tidyverse) # for data wrangling
 library(vegan) # for univariate metrics
 library(betapart) # partitioning beta diversity into components
 
+citation('betapart')
 # Data --------------------------------------------------------------------
 
 # aerially treated sites
