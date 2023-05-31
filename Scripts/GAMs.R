@@ -174,12 +174,12 @@ ri1_plot <- ri1 +
   theme_classic() + 
   xlim(2015.7, 2021) +
   xlab(" ") +
-  ylim(-2, 2) +
+  ylim(-3, 3) +
   ylab("s(treatment year * control plots)") +
   geom_vline(xintercept = 2016.5, linetype = "dotted",
              colour = "grey", lwd = 1) +
-  annotate("text", x = 2015.7, y = 2, label = "C") +
-  annotate("text", x = 2020.5, y = 2, label = "Invaded habitat") +
+  annotate("text", x = 2015.7, y = 3, label = "C") +
+  annotate("text", x = 2020.5, y = 3, label = "Invaded habitat") +
   ggtitle("Species richness") +
   theme(plot.title = element_text(size = 12))
 
@@ -192,12 +192,12 @@ ri2_plot <- ri2 +
   theme_classic() + 
   xlim(2015.7, 2021) +
   xlab(" ") +
-  ylim(-2, 2) +
+  ylim(-3, 3) +
   ylab("s(treatment year * treatment plots)") +
   geom_vline(xintercept = 2016.5, linetype = "dotted",
              colour = "grey", lwd = 1) +
-  annotate("text", x = 2015.7, y = 2, label = "D") +
-  annotate("text", x = 2020.5, y = 2, label = "Treated habitat")  +
+  annotate("text", x = 2015.7, y = 3, label = "D") +
+  annotate("text", x = 2020.5, y = 3, label = "Treated habitat")  +
   ggtitle(" ") 
 
 gridPrint(ri1_plot, ri2_plot, ncol = 1)

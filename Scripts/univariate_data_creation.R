@@ -4,6 +4,7 @@
 library(tidyverse) # for data wrangling
 library(vegan) # for univariate metrics
 library(betapart) # partitioning beta diversity into components
+library(plotrix)
 
 citation('betapart')
 # Data --------------------------------------------------------------------
@@ -58,6 +59,8 @@ write.csv(plant_diversity, "Data/plant_alpha_diversity.csv",
 
 
 # Summary statistics ------------------------------------------------------
+
+??std.error
 
 univariate_summary <- plant_diversity %>% 
   group_by(treatment, sample_year) %>% 
