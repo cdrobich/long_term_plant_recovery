@@ -12,6 +12,8 @@ str(data)
 data$site_id <- as.factor(data$site_id)
 data$treatment <- as.factor(data$treatment)
 
+unique(data$treatment)
+
 str(data)
 
 data <- data %>% 
@@ -75,6 +77,7 @@ plot(a3$gam, 2)
 
 gam.check(a3$gam)
 
+plot(a3, seWithMean = TRUE, shift = coef(a3))
 
 r3 <- gamm(richness ~ s(sample_year, k = 5, by = treatment) + treatment, select = TRUE,
            data = data, method = 'REML', random = list(site_id = ~1))
@@ -133,7 +136,7 @@ ab1_plot <- ab1 +
   ylab("s(treatment year * control plots)") +
   ylim(-55, 45) +
   geom_vline(xintercept = 2016.5, linetype = "dotted",
-             colour = "grey", lwd = 1) +
+             colour = "grey", lwd = 2) +
   annotate("text", x = 2015.7, y = 45, label = "A") +
   annotate("text", x = 2020.5, y = 45, label = "Invaded habitat") +
   ggtitle("Living cover abundance") +
@@ -151,7 +154,7 @@ ab2_plot <- ab2 +
   ylab("s(treatment year * treatment plots)") +
   ylim(-55, 45) +
   geom_vline(xintercept = 2016.5, linetype = "dotted",
-             colour = "grey", lwd = 1) +
+             colour = "grey", lwd = 2) +
   annotate("text", x = 2015.7, y = 45, label = "B") +
   annotate("text", x = 2020.5, y = 45, label = "Treated habitat") +
   ggtitle(" ") 
@@ -177,7 +180,7 @@ ri1_plot <- ri1 +
   ylim(-3, 3) +
   ylab("s(treatment year * control plots)") +
   geom_vline(xintercept = 2016.5, linetype = "dotted",
-             colour = "grey", lwd = 1) +
+             colour = "grey", lwd = 2) +
   annotate("text", x = 2015.7, y = 3, label = "C") +
   annotate("text", x = 2020.5, y = 3, label = "Invaded habitat") +
   ggtitle("Species richness") +
@@ -195,7 +198,7 @@ ri2_plot <- ri2 +
   ylim(-3, 3) +
   ylab("s(treatment year * treatment plots)") +
   geom_vline(xintercept = 2016.5, linetype = "dotted",
-             colour = "grey", lwd = 1) +
+             colour = "grey", lwd = 2) +
   annotate("text", x = 2015.7, y = 3, label = "D") +
   annotate("text", x = 2020.5, y = 3, label = "Treated habitat")  +
   ggtitle(" ") 
@@ -223,8 +226,9 @@ sh1_plot <- sh1 +
   xlab(" ") +
   ylab("s(treatment year * control plots)") +
   geom_vline(xintercept = 2016.5, linetype = "dotted",
-             colour = "grey", lwd = 1) +
-  annotate("text", x = 2015.7, y = 1.3, label = "E") +
+             colour = "grey", lwd = 2) +
+  annotate("text", x = 2015.7, y = 1.3, label = "A") +
+  annotate("text", x = 2020.5, y = 1.3, label = "Invaded habitat") +
   ggtitle("Shannon Weiner Diversity") +
   theme(plot.title = element_text(size = 12))
 
@@ -240,8 +244,9 @@ sh2_plot <- sh2 +
   xlab(" ") +
   ylab("s(treatment year * treatment plots)") +
   geom_vline(xintercept = 2016.5, linetype = "dotted",
-             colour = "grey", lwd = 1) +
-  annotate("text", x = 2015.7, y = 1.3, label = "F") 
+             colour = "grey", lwd = 2) +
+  annotate("text", x = 2015.7, y = 1.3, label = "B") +
+  annotate("text", x = 2020.5, y = 1.3, label = "Treated habitat")
 
 gridPrint(sh1_plot, sh2_plot, ncol = 1)
 
@@ -262,8 +267,9 @@ pi1_plot <- pi1 +
   xlab(" ") +
   ylab("s(treatment year * control plots)") +
   geom_vline(xintercept = 2016.5, linetype = "dotted",
-             colour = "grey", lwd = 1) +
-  annotate("text", x = 2015.7, y = 1, label = "G") +
+             colour = "grey", lwd = 2) +
+  annotate("text", x = 2015.7, y = 1, label = "C") +
+  annotate("text", x = 2020.5, y = 1, label = "Invaded habitat") +
   ggtitle("Pielou's Evenness") +
   theme(plot.title = element_text(size = 12))
 
@@ -279,8 +285,9 @@ pi2_plot <- pi2 +
   xlab(" ") +
   ylab("s(treatment year * treatment plots)") +
   geom_vline(xintercept = 2016.5, linetype = "dotted",
-             colour = "grey", lwd = 1) +
-  annotate("text", x = 2015.7, y = 1, label = "H") 
+             colour = "grey", lwd = 2) +
+  annotate("text", x = 2015.7, y = 1, label = "D") +
+  annotate("text", x = 2020.5, y = 1, label = "Treated habitat")
 
 gridPrint(pi1_plot, pi2_plot, ncol = 1)
 
